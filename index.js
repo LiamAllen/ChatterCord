@@ -1,3 +1,5 @@
+var port = process.env.PORT || 8080
+
 //imports go here
 const express = require("express");
 const http = require("node:http");
@@ -27,8 +29,8 @@ io.on('connection', (socket) => {   //alerts when a user connects
     });
   });
 
-server.listen(3000, () => { 
-    console.log("Server is listening on port 3000")
+server.listen(process.env.PORT, () => { 
+    console.log("Server is listening on port 8080")
 });
 
 //(c) 2025 Liam Patrick Allen
