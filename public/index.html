@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+   <link rel="stylesheet" type="text/css" href="/css/index.css">
+   <title>ChatterCord v0.0.1</title>
+ </head>
+ <body>
+   <div class="banner">
+     <h1>ChatterCord v0.0.1</h1>
+   </div>
+   <div class="msgBox">
+     <h2>Messages</h2>
+     <ul class="msgList"></ul>
+   </div>
+   <form action="" class="msgForm">
+     <input type="text" />
+     <button class="msgSubmit">Send</button>
+   </form>
+   <script src="/socket.io/socket.io.js"></script>
+   <script>
+
+    // select relevant elements
+    const form = document.querySelector("form");
+    const input = document.querySelector("input");
+    messageList = document.querySelector("ul");
+   
+    // establish socket.io connection
+    const socket = io();
+
+    //set username
+    const user = setName(); 
+
+    function setName() {
+      let username = window.prompt("Enter a username!", "John Doe");
+      if (username == null || username == "") {
+        window.alert("You Must Enter a Name!");
+        setName();
+      }
+      else {
+        //set name using socket.io
+        window.alert("Hello " + username);
+        return username;
+      }
+    }
+
+    // handle sending message to server & input reset
+    function sendMessage(e) {
+      // prevent form submission refreshing page
+      e.preventDefault();
+      // send input value to server as type 'message'
+      socket.emit("message", user + ": " + input.value);
+      // reset input value
+      input.value = "";
+    }
+   
+    // add listener to form submission
+    form.addEventListener("submit", sendMessage);
+   
+    // add message to our page
+    function addMessageToHTML(message) {
+      // create a new li element
+      const li = document.createElement("li");
+      //define class of li element
+      li.className = "msg";
+      // add message to the elements text
+      li.innerText = message;
+      // add to list of messages
+      messageList.append(li);
+    }
+     // watch for socket to emit a 'message'
+    socket.on("message", addMessageToHTML);
+   
+    // display message when a user connects
+    function alertUserConnected() {
+      addMessageToHTML("User connected");
+    }
+     // watch for socket to emit a 'user connected' event
+    socket.on("user connected", alertUserConnected);
+   
+   </script>
+ </body>
+</html>
