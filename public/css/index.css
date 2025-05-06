@@ -5,8 +5,29 @@ body {
     background-color: aqua;
 }
 
+p {
+    font-size: larger;
+    color: black;
+}
+
+a {
+    text-decoration: none;
+
+}
+
 .banner {
     background-color: aquamarine;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.navitem {
+    color:darkslategrey;
+}
+
+.navitem_c {
+    color: black;
 }
 
 .msg {
@@ -37,3 +58,8 @@ body {
 .msgForm {}
 
 .msgSubmit {}
+
+.contentPanel {
+    background-color: white;
+    color: black;
+}
