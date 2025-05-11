@@ -23,11 +23,15 @@ a {
 }
 
 .navitem {
-    color:darkslategrey;
+    color:rgb(31, 90, 199);
 }
 
 .navitem_c {
     color: black;
+}
+
+.navitem_l {
+    color: darkblue;
 }
 
 .msg {
@@ -62,4 +66,5 @@ a {
 .contentPanel {
     background-color: white;
     color: black;
+    text-align: center;
 }
