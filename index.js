@@ -24,7 +24,7 @@ const googleOauthClient = new google.auth.OAuth2(
   process.env.GOOGLE_REDIRECT_URI
 );
 
-const googleScope = 'https://www.googleapis.com/auth/userinfo.email'; //scope for retrieving user email from google API
+const googleScope = ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']; //scope for retrieving user email from google API
 
 const githubAuthUrl =  `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${process.env.GITHUB_REDIRECT_URI}&scope=user:email`;
 
@@ -53,11 +53,11 @@ const io = new socket.Server(server);
 function isAuthenticated(req, res, next) {
   if (req.session && req.session.accessToken) {
     // User is authenticated
-    console.log('user is authenticated');
+    //console.log('user is authenticated');
     next();
   } else {
     // User is not authenticated
-    console.log('user is not authenticated');
+    //console.log('user is not authenticated');
     res.redirect('/'); // Redirect to index
   }
 }
@@ -83,7 +83,7 @@ app.get('/', (req, res) => { //home router
 
 //all login routes are here
 app.get('/login', (req, res) => { //0auth router
-  
+  res.sendFile(__dirname + '/public/login.html');
   //todo: create login page for selecting auth provider to login with
 });
 
@@ -149,6 +149,10 @@ app.get('/api/userData', isAuthenticated, async (req, res) => { //gets user data
 app.get('/api/isAuthenticated', (req, res) => { //checks if user is currently logged in or not 
   res.send(req.session.isAuthenticated);
 });
+
+app.get('/api/getAuthServiceProvider', isAuthenticated, async (req, res) => { //gets the name of the auth provider for the current session
+  res.send(req.session.authprovider);
+})
 //functions for logouts here
 async function revokeGithubToken(accessToken, clientId, clientSecret) {
   try {
@@ -210,9 +214,8 @@ async function revokeGoogleToken() {
       await postReq.write(postData);
       return await postReq.end();
 }
-//remeber to alter .html files to finish routes. Some templates can be found at E:/Servers/Chattercord
-//troubleshoot a way to reuse the banner. ReactJS?
 //create chatbot to manage potenetial group activities (hangman? multi-user drawpad?) 
+//consider using rendering template tools such as pug or ejs for reactive ux
 
 //0auth2.0 callback handlers should all go here
 app.get('/callback', async (req, res) => {
@@ -268,15 +271,31 @@ app.get('/googleCallback', async (req, res) => {
 
     let { tokens } = await googleOauthClient.getToken(q.code);
     googleOauthClient.setCredentials(tokens);
-    req.session.accessToken = tokens;
-    req.session.authprovider = 'google';
-    req.session.isAuthenticated = true;
 
-    //TODO HERE: Use Google Oauth to retreive userData with the specified scope before routing to '/profile'
-    res.redirect('/profile');
+    if (tokens.scope.includes('https://www.googleapis.com/auth/userinfo.email') && tokens.scope.includes('https://www.googleapis.com/auth/userinfo.profile')) { //checks if the requested scope was granted
+      try {
+        const oauth2 = google.oauth2({ version: 'v2', googleOauthClient});
+        const response = await oauth2.userinfo.get(tokens);
+
+        req.session.userData = response.data;
+        
+        console.log(JSON.stringify(response.data));
+
+        req.session.accessToken = tokens;
+        req.session.authprovider = 'google';
+        req.session.isAuthenticated = true;
+
+        res.redirect('/profile');
+
+      } catch (error) {
+        console.error('Error getting user info:', error);
+        throw error;
+      }
+    }
   }
 });
 
+//socket handling for real-time chat
 io.on('connection', (socket) => {   //alerts when a user connects
     io.emit('a user has joined the room');
     console.log('a user connected');

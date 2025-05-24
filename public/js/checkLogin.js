@@ -7,7 +7,7 @@ async function fetchData() {
           throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const isAuthenticated = await response.text();
-      console.log(isAuthenticated);
+      //console.log(isAuthenticated);
       checkAuthStatus(isAuthenticated);
       } catch (error) {
         console.error('Error fetching data:', error);
