@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
  <head>
+   <script src="/js/checkLogin.js"></script>
    <meta charset="UTF-8" />
    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -8,78 +9,19 @@
    <title>ChatterCord v0.0.1</title>
  </head>
  <body>
-   <div class="banner">
-     <h1>ChatterCord v0.0.1</h1>
+  <div class="banner">
+    <a id="login-logouta" href=""><h2 class="navitem_l" id="login-logouth2"></h2></a>
+    <a href="/"><h1 class="navitem_c">ChatterCord v0.0.1</h1></a>
+    <a href="/chat"><h2 class="navitem">Join Chatroom!</h2></a>
+    <a href="/profile"><h2 class="navitem">Profile</h2></a>
+    <a href="/contact"><h2 class="navitem">Contact</h2></a>
+  </div>
+   <div class="pageContent, contentPanel">
+     <h2 text-align="center">Anonymous Messaging Board For You and Your Friends!</h2>
+     <p>Welcome to ChatterCord v0.0.1! This application is a simple chatroom designed for anonymous global messaging. Features in this release include the ability
+        to enter a chatroom with others from around the world, pick a username, and send messages to others in the room. Emojis are supported, but they must be 
+        copy/pasted from external sites to be used in our chatrooms.
+     </p>
+     <h3>Login With The Navbar Above to Begin!</h3>
    </div>
-   <div class="msgBox">
-     <h2>Messages</h2>
-     <ul class="msgList"></ul>
-   </div>
-   <form action="" class="msgForm">
-     <input type="text" />
-     <button class="msgSubmit">Send</button>
-   </form>
-   <script src="/socket.io/socket.io.js"></script>
-   <script>
-
-    // select relevant elements
-    const form = document.querySelector("form");
-    const input = document.querySelector("input");
-    messageList = document.querySelector("ul");
-   
-    // establish socket.io connection
-    const socket = io();
-
-    //set username
-    const user = setName(); 
-
-    function setName() {
-      let username = window.prompt("Enter a username!", "John Doe");
-      if (username == null || username == "") {
-        window.alert("You Must Enter a Name!");
-        setName();
-      }
-      else {
-        //set name using socket.io
-        window.alert("Hello " + username);
-        return username;
-      }
-    }
-
-    // handle sending message to server & input reset
-    function sendMessage(e) {
-      // prevent form submission refreshing page
-      e.preventDefault();
-      // send input value to server as type 'message'
-      socket.emit("message", user + ": " + input.value);
-      // reset input value
-      input.value = "";
-    }
-   
-    // add listener to form submission
-    form.addEventListener("submit", sendMessage);
-   
-    // add message to our page
-    function addMessageToHTML(message) {
-      // create a new li element
-      const li = document.createElement("li");
-      //define class of li element
-      li.className = "msg";
-      // add message to the elements text
-      li.innerText = message;
-      // add to list of messages
-      messageList.append(li);
-    }
-     // watch for socket to emit a 'message'
-    socket.on("message", addMessageToHTML);
-   
-    // display message when a user connects
-    function alertUserConnected() {
-      addMessageToHTML("User connected");
-    }
-     // watch for socket to emit a 'user connected' event
-    socket.on("user connected", alertUserConnected);
-   
-   </script>
- </body>
-</html>
+</body>

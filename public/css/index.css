@@ -5,8 +5,50 @@ body {
     background-color: aqua;
 }
 
+.signin-page {
+    background-color: white;
+    align-content: center;
+    text-align: center;
+
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 15%;
+    margin-bottom: 15%;
+
+    padding-top: 6%;
+    padding-bottom: 6%;
+    padding-left: 10%;
+    padding-right: 10%;
+
+}
+
+p {
+    font-size: larger;
+    color: black;
+}
+
+a {
+    text-decoration: none;
+
+}
+
 .banner {
     background-color: aquamarine;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.navitem {
+    color:rgb(31, 90, 199);
+}
+
+.navitem_c {
+    color: black;
+}
+
+.navitem_l {
+    color: darkblue;
 }
 
 .msg {
@@ -34,6 +76,14 @@ body {
     overflow-wrap: break-word;
     overflow-x: hidden;
 }
-.msgForm {}
 
-.msgSubmit {}
+.contentPanel {
+    background-color: white;
+    color: black;
+    text-align: center;
+}
+
+#profile_img {
+    width: 200px;
+    height: 200px;
+}
