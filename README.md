@@ -3,3 +3,5 @@
 Give it a try on Heroku: https://chatter-cord-82da2429d0a7.herokuapp.com/
 ## Changes In This Version
   Version 0.0.2 implements 0Auth2.0 with GitHub's authentication API to allow users to have a persistent username and profile. This version is not ready for production, and may take some alteration to be run on your home computer.
+## NOTICE
+  DNS propogation is currently in progress. Access links may not work until this is completely finished, and I have had time to iron out the bugs. keep an eye on this repository for updates. 
