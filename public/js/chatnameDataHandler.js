@@ -1,7 +1,7 @@
  // select relevant elements
     const form = document.querySelector("form");
     const input = document.querySelector("input");
-    messageList = document.querySelector("ul");
+    messageList = document.querySelector(".msgList");
    
     // establish socket.io connection
     const socket = io();
